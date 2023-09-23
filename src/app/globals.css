@@ -2,7 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Colores */
+:root {
+  --black: #202124; /* Negro del tema oscuro de Google */
+  --gray-border: #8e8e8e; /* Gris para bordes */
+  --text-primary: #f8f8f8; /* Color de texto principal */
+  --bg-primary: #202124; /* Color de fondo principal */
+  --green-pastel: #4ac372;
+}
 body {
-  background: black;
+  background-color: E5FFE5;
   color: white;
+  font-family: Helvetica, sans-serif;
 }

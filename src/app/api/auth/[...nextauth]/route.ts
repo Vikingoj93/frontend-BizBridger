@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import User from "@/models/user";
-import { connectDB } from "@/libs/mongoose";
+import { connectDB, disconnectDB } from "@/libs/mongoose";
 import axios, { AxiosError } from "axios";
 import { validateRes } from "@/libs/validate";
 
@@ -26,7 +26,6 @@ const handler = NextAuth({
       try {
         //conectar DB y para verificar
         const db = await connectDB();
-        console.log("buscando usuario");
         const userExist = await User.findOne({ email: user?.email });
 
         // si el usuario no esta registrado, obtener datos del usuario para enviar los datos al backend para que valide y registre en la base de datos
@@ -55,6 +54,7 @@ const handler = NextAuth({
           } catch (error) {
             if (error instanceof AxiosError) {
               console.error("error en la solicitud", error.message);
+              disconnectDB();
               return false;
             }
           }
@@ -75,16 +75,15 @@ const handler = NextAuth({
           });
 
           try {
-            const res = await axios.put(
-              `${REGISTER_URL}`,
-              userExist
-            );
+            const res = await axios.put(`${REGISTER_URL}`, userExist);
 
             validateRes(res);
+            disconnectDB();
             return true;
           } catch (error) {
             if (error instanceof AxiosError) {
               console.error("error en la solicitud", error.message);
+              disconnectDB();
               return false;
             }
           }
@@ -96,9 +95,18 @@ const handler = NextAuth({
       }
 
       console.log("inicio de sesion exitoso");
+      disconnectDB();
       return true;
     },
     async session({ session, token, user }) {
+      console.log(`token`)
+      console.log(token)
+
+      console.log('user')
+      console.log(user)
+
+      console.log('session')
+      console.log(session)
       return session;
     },
     async jwt({ token, user, account, profile }) {

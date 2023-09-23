@@ -1,5 +1,5 @@
-export default function Loading() {
+export default function Loading({children}: {children: React.ReactNode}) {
   return (
-    <div>Loading</div>
+    <div>{children}</div>
   )
 }

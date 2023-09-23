@@ -1,10 +1,12 @@
 "use client";
-import { useSession } from "next-auth/react";
+import { useSession  } from "next-auth/react";
+import {useEffect} from 'react'
 
 export default function Dashboard() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
-  console.log(session);
+
+
   return <div>
             {
               <p>
