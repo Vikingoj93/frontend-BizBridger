@@ -8,40 +8,57 @@ export default function NavBar() {
   const { status } = useSession();
 
     return (
-      <header>
+      <header style={{ position: 'sticky', top: '0', zIndex: '1000' }}>
         <nav className="bg-primary p-4 flex items-center justify-between">
           <div>
-            <h1 className="text-white text-xl font-semibold">BizBridger</h1>
+            <Link href={'/'}>
+            <div className="flex items-center">
+            <img
+              src='https://i.postimg.cc/Yqrqt6gY/usuario.png'
+              alt="Icono de usuario"
+              className="w-12 h-12 mr-4"
+            />
+            <h1 className=" text-xl font-semibold">BizBridger</h1>
+          </div>
+            </Link>
           </div>
           <div className="flex items-center space-x-4">
-            <ul className="flex gap-8 space-x-4">
+            <ul className="flex gap-10 space-x-4">
               <li>
                 <Link
-                  href="/personal"
-                  className="text-white hover:text-gray-300 text-xl"
+                  href="/gestiones/personas"
+                  className=" font-bold hover:text-gray-300 text-xl"
                 >
-                  Personal
+                  Personas
                 </Link>
               </li>
               <li>
                 <Link
                   href="/comercial"
-                  className="text-white hover:text-gray-300 text-xl"
+                  className=" font-bold hover:text-gray-300 text-xl"
                 >
-                  Comercial
+                  Negocio
                 </Link>
               </li>
               <li>
                 <Link
                   href="/hogar"
-                  className="text-white hover:text-gray-300 text-xl"
+                  className=" font-bold hover:text-gray-300 text-xl"
                 >
                   Hogar
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/recursos"
+                  className=" font-bold hover:text-gray-300 text-xl"
+                >
+                  Informes y Recuros
+                </Link>
+              </li>
             </ul>
           </div>
-            {status === "loading"  ? <Loading><p>Loading</p></Loading> : <HandleLogin />}
+            {status === "loading"  ? <Loading><p className="font-semibold text-lg m-2">Loading</p></Loading> : <HandleLogin />}
           
         </nav>
       </header>

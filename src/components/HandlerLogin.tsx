@@ -1,24 +1,29 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { useSession} from "next-auth/react";
-import {SignIn, SignOut} from '@/components/Buttons'
+import { useSession } from "next-auth/react";
+import { SignIn, SignOut } from "@/components/Buttons";
+import userImage from '../../public/usuario.svg'
+import path from 'path'
 
 export default function handlerLogin() {
   const { data: session } = useSession();
 
   return (
-    <div className="user-actions">
+    <div className="min-w-min flex">
       {session ? (
         <>
           <Link href={"/dashboard"} className="mr-5 hover:text-white">
-            
-      <i className="fas fa-user-circle text-white text-2xl">perfil</i>
+            <div className="w-10 h-10">
+
+          <img src='https://i.postimg.cc/HjNC276k/usuario.png' alt='usuario'/>
+            </div>
+
           </Link>
-         <SignOut/>
+          <SignOut />
         </>
       ) : (
-        <SignIn/>
+        <SignIn />
       )}
     </div>
   );

@@ -99,14 +99,7 @@ const handler = NextAuth({
       return true;
     },
     async session({ session, token, user }) {
-      console.log(`token`)
-      console.log(token)
-
-      console.log('user')
-      console.log(user)
-
-      console.log('session')
-      console.log(session)
+      
       return session;
     },
     async jwt({ token, user, account, profile }) {
