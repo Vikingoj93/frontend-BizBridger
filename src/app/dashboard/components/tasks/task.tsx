@@ -1,18 +1,8 @@
-import axios from 'axios'
-
-export default async function TaskComponent() {
-
-  const {TASK_URL} = process.env;
-
-  const res = await axios.get(`${TASK_URL}/tasks`)
-
-  const tasks = res.data
-
-  console.log(tasks)
+export default function TaskComponent() {
 
   return (
     <div>
-      <h1>{tasks}</h1>
+      <h1>Información de la Sesión</h1>
     </div>
-  )
+  );
 }
