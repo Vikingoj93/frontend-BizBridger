@@ -1,11 +1,10 @@
 "use client";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import Loading from "@/app/Loading";
 import HandleLogin from "@/components/HandlerLogin";
 
 export default function NavBar() {
-  const { status } = useSession();
+  
 
     return (
       <header style={{ position: 'sticky', top: '0', zIndex: '1000' }}>
@@ -58,7 +57,8 @@ export default function NavBar() {
               </li>
             </ul>
           </div>
-            {status === "loading"  ? <Loading><p className="font-semibold text-lg m-2">Loading</p></Loading> : <HandleLogin />}
+            {/*status === "loading"  ? <Loading><p className="font-semibold text-lg m-2">Loading</p></Loading> : <HandleLogin />*/}
+            <HandleLogin />
           
         </nav>
       </header>
