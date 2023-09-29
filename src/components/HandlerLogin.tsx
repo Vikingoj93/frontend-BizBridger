@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { SignIn, SignOut } from "@/components/Buttons";
+import { SignIn, LogOut } from "@/components/Buttons";
 
 export default function handlerLogin() {
 
@@ -19,7 +19,10 @@ export default function handlerLogin() {
         </>
        ) : (
         <SignIn />
-       )*/SignIn()}
+       )*/<>
+       <SignIn/><LogOut/>
+       </>
+       }
     </div>
   );
 }
