@@ -1,20 +1,17 @@
 'use client'
-import React from 'react'
-import Panel from './panel'
-import Main from './Main'
-import TaskComponent from './components/tasks/task'
-import axios from 'axios'
+import React, { useContext } from "react";
+import Panel from "./panel";
+import Main from "./Main";
+import TaskComponent from "./components/tasks/TaskComponent";
 
-
-export default function DashboardPage() { 
+export default function DashboardPage() {
 
   return (
-    <div className='flex'>
+    <div className="flex flex-col sm:flex-row">
         <Panel />
         <Main>
-          
-            <TaskComponent></TaskComponent>
+          <TaskComponent></TaskComponent>
         </Main>
     </div>
-  )
+  );
 }
