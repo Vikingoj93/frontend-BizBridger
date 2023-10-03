@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import NavBar from "@/components/NavBar";
+import NavBar from "@/app/components/NavBar";
 import AuthContext from "../context/AuthContext";
 
 export const metadata: Metadata = {

@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import HandleLogin from "@/components/HandlerLogin";
+import HandleLogin from "@/app/components/HandlerLogin";
 import { authContext } from "@/context/AuthContext";
 
 export default function NavBar() {

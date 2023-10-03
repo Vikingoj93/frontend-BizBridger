@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Login, LogOut } from "@/components/Buttons";
+import { Login, LogOut } from "@/app/components/Buttons";
 import { authContext } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 
