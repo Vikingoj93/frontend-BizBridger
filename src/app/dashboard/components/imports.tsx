@@ -1,17 +1,17 @@
   import dynamic from 'next/dynamic'
   
   export const Profile = dynamic(()=> import('./Profile'));
-  export const Agenda = dynamic(()=> import('./TaskComponent'));
-  export const Laboral = dynamic(()=> import('./TaskComponent'))
-  export const Finanzas = dynamic(()=> import('./TaskComponent'))
-  export const Notas = dynamic(()=> import('./TaskComponent'))
-  export const Inventario = dynamic(()=> import('./TaskComponent'))
-  export const Contabilidad = dynamic(()=> import('./TaskComponent'))
-  export const Rentabilidad = dynamic(()=> import('./TaskComponent'))
-  export const Consumo = dynamic(()=> import('./TaskComponent'))
-  export const Mantenimiento = dynamic(()=> import('./TaskComponent'))
-  export const Gastos = dynamic(()=> import('./TaskComponent'))
-  export const Informes = dynamic(()=> import('./TaskComponent'))
-  export const Rendimiento = dynamic(()=> import('./TaskComponent'))
-  export const Optimizacion = dynamic(()=> import('./TaskComponent'))
-  export const Otros = dynamic(()=> import('./TaskComponent'))
+  export const Agenda = dynamic(()=> import('./DiariComponent'));
+  export const Laboral = dynamic(()=> import('./DiariComponent'))
+  export const Finanzas = dynamic(()=> import('./DiariComponent'))
+  export const Notas = dynamic(()=> import('./DiariComponent'))
+  export const Inventario = dynamic(()=> import('./DiariComponent'))
+  export const Contabilidad = dynamic(()=> import('./DiariComponent'))
+  export const Rentabilidad = dynamic(()=> import('./DiariComponent'))
+  export const Consumo = dynamic(()=> import('./DiariComponent'))
+  export const Mantenimiento = dynamic(()=> import('./DiariComponent'))
+  export const Gastos = dynamic(()=> import('./DiariComponent'))
+  export const Informes = dynamic(()=> import('./DiariComponent'))
+  export const Rendimiento = dynamic(()=> import('./DiariComponent'))
+  export const Optimizacion = dynamic(()=> import('./DiariComponent'))
+  export const Otros = dynamic(()=> import('./DiariComponent'))
