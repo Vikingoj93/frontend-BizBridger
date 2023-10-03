@@ -10,3 +10,8 @@ export interface IUser {
       provider: string;
       providerId: string;
   }
+
+  export interface IPanel {
+    title: string,
+    buttons: {[key: string]: string}
+  }

@@ -1,129 +1,98 @@
-import Link from "next/link";
+"use client";
+import { IPanel } from "@/types/interfaces";
+import {useState} from 'react'
+export default function Panel({handleComponent}:{handleComponent: any}) {
 
-export default function Panel() {
+
+  const buttons: IPanel[] = [
+    {
+      title: 'Perfil',
+      buttons: {
+        perfil: 'Bienvenido'
+      }
+    },
+    {
+      title: "Personal",
+      buttons: {
+        agenda: "Agenda",
+        laboral: "Laboral",
+        finanzas: "Finanzas",
+        notas: "Notas",
+      },
+    },
+    {
+      title: "Negocios",
+      buttons: {
+        inventario: "Inventario",
+        contabilidad: "Contabilidad",
+        rentabilidad: "Rentabilidad",
+      },
+    },
+    {
+      title: "Hogar",
+      buttons: {
+        consumo: "Consumo",
+        mantenimiento: "Mantenimiento",
+        gastos: "Gastos",
+      },
+    },
+    {
+      title: "Recursos",
+      buttons: {
+        informes: "Informes",
+        rendimiento: "Rendimiento",
+        optimizacion: "Optimizacion",
+        otros: "Otros",
+      },
+    },
+  ];
+
+  const [selectedTitle, setSelectedTitle] = useState("");
+
+  const toggleButtons = (title: string) => {
+    if (selectedTitle === title) {
+      // Si se hace clic en el mismo título, oculta los botones
+      setSelectedTitle("");
+    } else {
+      // Si se hace clic en un título diferente, muestra los botones
+      setSelectedTitle(title);
+    }
+  };
+
+
   return (
-    <section className="flex flex-col bg-quinary text-white w-64 min-h-screen p-4">
-      <div className="flex flex-col justify-between h-full">
-        <ul className="space-y-2">
-          <li className="my-4">
-            <span className="font-bold">Gestion Personal</span>
-            <ul className="space-y-2 box-border my-2">
-              <li className="my-2">
-                <Link
-                  className="flex items-center px-4 hover:text-lg"
-                  href={"#"}
-                >
-                  Tareas y Agenda
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex items-center px-4 hover:text-lg"
-                  href={"#"}
-                >
-                  Finanzas Personales
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex items-center px-4 hover:text-lg"
-                  href={"#"}
-                >
-                  Notas y Documentos
-                </Link>
-              </li>
-            </ul>
-          </li>
-          <li className="my-4">
-            <span className="font-bold">Gestión de Negocios</span>
-            <ul className="space-y-2 box-border my-2">
-              <li className="my-2">
-                <Link
-                  className="flex items-center px-4 hover:text-lg"
-                  href={"#"}
-                >
-                  Inventario
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex items-center px-4 hover:text-lg"
-                  href={"#"}
-                >
-                  Contabilidad Comercial
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex items-center px-4 hover:text-lg"
-                  href={"#"}
-                >
-                  Rentabilidad
-                </Link>
-              </li>
-            </ul>
-          </li>
-          <li className="my-4">
-            <span className="font-bold">Optimización del Hogar</span>
-            <ul className="space-y-2 box-border my-2">
-              <li className="my-2">
-                <Link
-                  className="flex items-center px-4 hover:text-lg"
-                  href={"#"}
-                >
-                  Consumo Doméstico
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex items-center px-4 hover:text-lg"
-                  href={"#"}
-                >
-                  Tareas Domésticas
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex items-center px-4 hover:text-lg"
-                  href={"#"}
-                >
-                  otros
-                </Link>
-              </li>
-            </ul>
-          </li>
-          <li className="my-4">
-            <span className="font-bold">Informes y Análisis</span>
-            <ul className="space-y-2 box-border my-2">
-              <li className="my-2">
-                <Link
-                  className="flex items-center px-4 hover:text-lg"
-                  href={"#"}
-                >
-                  Informe de Gastos
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex items-center px-4 hover:text-lg"
-                  href={"#"}
-                >
-                  Informe de Rendimiento
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex items-center px-4 hover:text-lg"
-                  href={"#"}
-                >
-                  Optimizaciones
-                </Link>
-              </li>
-            </ul>
-          </li>
-          
-        </ul>
-      </div>
-    </section>
+    <div className="flex flex-col sm:flex-row bg-quinary">
+        <section className="flex flex-col bg-quinary text-white border-r border-white w-64 min-h-screen p-4">
+          <div className="flex flex-col h-full">
+            {buttons.map((item, index) => (
+              <div className="mb-2" key={index}>
+                {<h2 className="text-xl font-semibold mb-2 w-min" onClick={() => toggleButtons(item.title)}> <span className="inline-block px-4 py-2 text-blue-500 border border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white hover:shadow-md transition duration-300 ease-in-out">
+                {item.title}
+                  </span></h2>}
+                  
+                {selectedTitle === item.title ? (
+                  <ul className="space-y-2">
+                    {Object.entries(item.buttons).map(
+                      ([key, label], buttonIndex) => (
+                        <li className="inline-block px-4 mx-2 py-2 text-blue-500 border border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white hover:shadow-md transition duration-300 ease-in-out" key={buttonIndex}>
+                          <button
+                            onClick={() => {
+                              handleComponent(key);
+                            }}
+                          >
+                            {label}
+                          </button>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                ) : (
+                  null
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+    </div>
   );
 }

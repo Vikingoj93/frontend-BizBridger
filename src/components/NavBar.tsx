@@ -1,8 +1,12 @@
+'use client'
 import Link from "next/link";
-import Loading from "@/app/Loading";
 import HandleLogin from "@/components/HandlerLogin";
+import { authContext } from "@/context/AuthContext";
 
 export default function NavBar() {
+
+  const autenticated = authContext()
+
   return (
     <header style={{ position: 'sticky', top: '0', zIndex: '1000' }}>
       <nav className="bg-primary p-4 flex items-center justify-between">
@@ -55,7 +59,6 @@ export default function NavBar() {
           </ul>
         </div>
         <div className="">
-          {/*status === "loading"  ? <Loading><p className="font-semibold text-lg m-2">Loading</p></Loading> : <HandleLogin />*/}
           <HandleLogin />
         </div>
       </nav>
