@@ -1,24 +1,25 @@
-'use client'
+"use client";
 import Link from "next/link";
 import HandleLogin from "@/app/components/HandlerLogin";
 import { authContext } from "@/context/AuthContext";
 
 export default function NavBar() {
-
-  const autenticated = authContext()
+  const autenticated = authContext();
 
   return (
-    <header style={{ position: 'sticky', top: '0', zIndex: '1000' }}>
-      <nav className="bg-primary p-4 flex items-center justify-between">
-        <div className="">
-          <Link href={'/'}>
+    <header className="sticky top-0 z-50">
+      <nav className="bg-gradient-to-r from-purple-600 to-pink-600 p-4 flex items-center justify-between">
+        <div>
+          <Link href="/">
             <div className="flex items-center">
               <img
-                src='https://i.postimg.cc/Yqrqt6gY/usuario.png'
+                src="https://i.postimg.cc/Yqrqt6gY/usuario.png"
                 alt="Icono de usuario"
                 className="w-12 h-12 mr-4"
               />
-              <h1 className="text-xl font-semibold">BizBridger</h1>
+              <h1 className="text-xl font-semibold text-white hover:text-gray-300">
+                BizBridger
+              </h1>
             </div>
           </Link>
         </div>
@@ -27,7 +28,7 @@ export default function NavBar() {
             <li>
               <Link
                 href="/gestiones/personas"
-                className="font-bold hover:text-gray-300 text-xl"
+                className="text-xl text-white hover:text-gray-300"
               >
                 Personas
               </Link>
@@ -35,7 +36,7 @@ export default function NavBar() {
             <li>
               <Link
                 href="/comercial"
-                className="font-bold hover:text-gray-300 text-xl"
+                className="text-xl text-white hover:text-gray-300"
               >
                 Negocio
               </Link>
@@ -43,7 +44,7 @@ export default function NavBar() {
             <li>
               <Link
                 href="/hogar"
-                className="font-bold hover:text-gray-300 text-xl"
+                className="text-xl text-white hover:text-gray-300"
               >
                 Hogar
               </Link>
@@ -51,14 +52,14 @@ export default function NavBar() {
             <li>
               <Link
                 href="/recursos"
-                className="font-bold hover:text-gray-300 text-xl"
+                className="text-xl text-white hover:text-gray-300"
               >
                 Informes y Recursos
               </Link>
             </li>
           </ul>
         </div>
-        <div className="">
+        <div>
           <HandleLogin />
         </div>
       </nav>

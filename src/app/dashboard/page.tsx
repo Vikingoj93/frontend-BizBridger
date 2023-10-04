@@ -67,7 +67,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row bg-quinary">
+    <div className="flex flex-col sm:flex-row bg-gradient-to-r from-purple-600 to-pink-600">
       <DashboardContext>
        <Panel handleComponent={handleComponent} />
         <Main>{renderComponents()}</Main>

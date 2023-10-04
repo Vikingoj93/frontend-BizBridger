@@ -1,8 +1,8 @@
 "use client";
 import { IPanel } from "@/types/interfaces";
-import {useState} from 'react'
-export default function Panel({handleComponent}:{handleComponent: any}) {
+import { useState } from 'react';
 
+export default function Panel({ handleComponent }: { handleComponent: any }) {
 
   const buttons: IPanel[] = [
     {
@@ -59,40 +59,38 @@ export default function Panel({handleComponent}:{handleComponent: any}) {
     }
   };
 
-
   return (
-    <div className="flex flex-col sm:flex-row bg-quinary">
-        <section className="flex flex-col bg-quinary text-white border-r border-white w-64 min-h-screen p-4">
-          <div className="flex flex-col h-full">
-            {buttons.map((item, index) => (
-              <div className="mb-2" key={index}>
-                {<h2 className="text-xl font-semibold mb-2 w-min" onClick={() => toggleButtons(item.title)}> <span className="inline-block px-4 py-2 text-blue-500 border border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white hover:shadow-md transition duration-300 ease-in-out">
-                {item.title}
-                  </span></h2>}
-                  
-                {selectedTitle === item.title ? (
-                  <ul className="space-y-2">
-                    {Object.entries(item.buttons).map(
-                      ([key, label], buttonIndex) => (
-                        <li className="inline-block px-4 mx-2 py-2 text-blue-500 border border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white hover:shadow-md transition duration-300 ease-in-out" key={buttonIndex}>
-                          <button
-                            onClick={() => {
-                              handleComponent(key);
-                            }}
-                          >
-                            {label}
-                          </button>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                ) : (
-                  null
+    <div className="flex flex-col bg-gradient-to-tlr from-purple-600 to-pink-600 text-white w-1/4 min-h-screen p-4">
+      <section className="flex flex-col h-full">
+        {buttons.map((item, index) => (
+          <div className="mb-2" key={index}>
+            {<h2 className={`text-xl font-semibold mb-2 w-min cursor-pointer transform hover:scale-105 transition duration-300 ease-in-out ${selectedTitle === item.title ? 'hover:text-white' : 'text-purple-200 hover:text-white'}`} onClick={() => toggleButtons(item.title)}>
+              {item.title}
+            </h2>}
+
+            {selectedTitle === item.title ? (
+              <ul className="space-y-2">
+                {Object.entries(item.buttons).map(
+                  ([key, label], buttonIndex) => (
+                    <li className="inline-block px-4 mx-2 py-2" key={buttonIndex}>
+                      <button
+                        className={`bg-purple-400 hover:bg-purple-500 text-white rounded-full px-4 py-2 shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out`}
+                        onClick={() => {
+                          handleComponent(key);
+                        }}
+                      >
+                        {label}
+                      </button>
+                    </li>
+                  )
                 )}
-              </div>
-            ))}
+              </ul>
+            ) : (
+                null
+              )}
           </div>
-        </section>
+        ))}
+      </section>
     </div>
   );
 }
