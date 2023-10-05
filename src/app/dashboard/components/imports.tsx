@@ -1,5 +1,6 @@
   import dynamic from 'next/dynamic'
-  
+
+  //import panel  
   export const Profile = dynamic(()=> import('./Profile'));
   export const Agenda = dynamic(()=> import('./DiaryComponent'));
   export const Laboral = dynamic(()=> import('./DiaryComponent'))
