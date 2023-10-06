@@ -14,7 +14,7 @@ export function InputTitle({
         type="text"
         id="title"
         name="title"
-        value={data.title}
+        value={data}
         onChange={handleChange}
         required
         className="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-purple-500"
@@ -38,7 +38,7 @@ export function InputDescription({
       <textarea
         id="description"
         name="description"
-        value={data.description}
+        value={data}
         onChange={handleChange}
         required
         className="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-purple-500"
@@ -65,7 +65,7 @@ export function InputDate({
         type="date"
         id="Date"
         name="Date"
-        value={data.eventDate}
+        value={data}
         onChange={handleChange}
         required
         className="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-purple-500"
@@ -88,8 +88,8 @@ export function InputCheckbox({
       <label>
         <input
           type="checkbox"
-          name="requiresTime"
-          checked={data.requiresTime}
+          name="required"
+          checked={data}
           onChange={handleChange}
           className="mr-2"
         />{" "}
@@ -115,7 +115,7 @@ export function InputTime({
         type="time"
         id="Time"
         name="Time"
-        value={data.timeDate || ""}
+        value={data}
         onChange={handleChange}
         className="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-purple-500"
         required
@@ -144,7 +144,7 @@ export function InputCategory({
         <option value="">Seleccione una categoria</option>
         <option value="trabajo">Trabajo</option>
         <option value="personal">Personal</option>
-        <option value="Otros">Otros</option>
+        <option value="otros">Otros</option>
       </select>
     </div>
   );

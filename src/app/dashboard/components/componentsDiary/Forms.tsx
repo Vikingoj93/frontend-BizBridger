@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import {
   validateDateForm,
   validateCategoryForm,
@@ -37,9 +37,9 @@ export function FormDiary({ onSubmitDiary }: { onSubmitDiary: any }) {
   const [eventData, setEventData] = useState<eventData>({
     title: "",
     description: "",
-    eventDate: new Date().toJSON().slice(0, 10),
-    requiresTime: false,
-    timeDate: null,
+    Date: new Date().toJSON().slice(0, 10),
+    required: false,
+    Time: null,
     category: "",
   });
 
@@ -49,17 +49,32 @@ export function FormDiary({ onSubmitDiary }: { onSubmitDiary: any }) {
     handleChange(e, setEventData);
   };
 
+  useEffect(() => {
+    if (!eventData.required) {
+      setEventData((prevData) => ({
+        ...prevData,
+        Time: null,
+      }));
+    }
+  }, [eventData.required]);
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!validateDateForm(eventData.eventDate)) {
+
+    const currentDate = new Date().toJSON().slice(0, 10);
+    console.log(currentDate);
+
+    if (!validateDateForm(eventData.Date)) {
       alert("la Fecha del evento debe ser superior a la fecha actual");
       return;
     }
 
-    if (eventData.timeDate) {
-      if (!validateTimeForm(eventData.timeDate)) {
-        alert("La hora del evento debe ser superior a la hora actual");
-        return;
+    if (eventData.Date === currentDate) {
+      if (eventData.Time) {
+        if (!validateTimeForm(eventData.Time)) {
+          alert("La hora del evento debe ser superior a la hora actual");
+          return;
+        }
       }
     }
 
@@ -67,6 +82,7 @@ export function FormDiary({ onSubmitDiary }: { onSubmitDiary: any }) {
       alert("Debe seleccionar una categoria para su evento");
       return;
     }
+
     onSubmitDiary(eventData);
   };
 
@@ -87,18 +103,18 @@ export function FormDiary({ onSubmitDiary }: { onSubmitDiary: any }) {
         label={"Descripcion del evento"}
       />
       <InputDate
-        data={eventData.eventDate}
+        data={eventData.Date}
         handleChange={EventHandleChange}
         label={"Fecha para el evento"}
       />
       <InputCheckbox
-        data={eventData.requiresTime}
+        data={eventData.required}
         handleChange={EventHandleChange}
         label={"¿Requiere una hora para el evento?"}
       />
-      {eventData.requiresTime && (
+      {eventData.required && (
         <InputTime
-          data={eventData.timeDate}
+          data={eventData.Time === null ? "" : eventData.Time}
           handleChange={EventHandleChange}
           label={"Hora:"}
         />
@@ -124,8 +140,8 @@ export function FormTask({ onSubmitTask }: { onSubmitTask: any }) {
     title: "",
     description: "",
     category: "",
-    requiresTime: false,
-    taskDate: null,
+    required: false,
+    Date: null,
   });
 
   const EventHandleChange = (
@@ -134,10 +150,25 @@ export function FormTask({ onSubmitTask }: { onSubmitTask: any }) {
     handleChange(e, setTaskData);
   };
 
+  useEffect(() => {
+    if (!taskData.required) {
+      setTaskData((prevData) => ({
+        ...prevData,
+        Date: null,
+      }));
+    }
+    if (taskData.required) {
+      setTaskData((prevData) => ({
+        ...prevData,
+        Date: new Date().toJSON().slice(0, 10),
+      }));
+    }
+  }, [taskData.required]);
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (taskData.taskDate) {
-      if (!validateDateForm(taskData.taskDate)) {
+    if (taskData.Date && taskData.required) {
+      if (!validateDateForm(taskData.Date)) {
         alert("La fecha para la tarea debe ser superior a la fecha actual");
         return;
       }
@@ -166,13 +197,13 @@ export function FormTask({ onSubmitTask }: { onSubmitTask: any }) {
         label={"Descripcion para la tarea"}
       />
       <InputCheckbox
-        data={taskData.requiresTime}
+        data={taskData.required}
         handleChange={EventHandleChange}
         label={"¿Requiere una fecha para la tarea?"}
       />
-      {taskData.requiresTime && (
+      {taskData.required && (
         <InputDate
-          data={taskData.taskDate}
+          data={taskData.Date === null ? "" : taskData.Date}
           handleChange={EventHandleChange}
           label={"Fecha:"}
         />
