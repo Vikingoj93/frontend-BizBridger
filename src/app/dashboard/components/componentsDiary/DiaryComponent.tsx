@@ -1,10 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { FormDiary, FormTask, FormNotas } from "./Forms";
-import { ButtonsDairy } from "./buttonsDairy";
+import { ButtonsDairy } from "./ButtonsDiary";
 
 export default function DiaryComponent() {
   const handleSubmitDiary = (eventData: any) => {
+
     console.log(eventData);
   };
   const handleSubmitTask = (eventData: any) => {
@@ -37,9 +38,12 @@ export default function DiaryComponent() {
 
   return (
     <div className="container mx-auto flex space-x-4 p-4 bg-gradient-to-r from-purple-600 to-pink-600">
-      <section className="w-1/3 p-4 rounded-xl shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out bg-gradient-to-r from-pink-600 to-purple-600">
+      <section className="w-auto max-w-min p-4 rounded-xl shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out bg-gradient-to-r from-pink-600 to-purple-600">
+        <div className="flex flex-wrap gap-4">
+
         <ButtonsDairy handleComponent={handleComponent}/>
       {renderComponents()}
+        </div>
       </section>
       <section className="w-2/3 p-4 rounded-xl shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out bg-gradient-to-r from-pink-600 to-red-600">
         <div>
