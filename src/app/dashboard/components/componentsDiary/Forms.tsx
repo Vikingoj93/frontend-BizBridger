@@ -3,6 +3,9 @@ import {
   validateDateForm,
   validateCategoryForm,
   validateTimeForm,
+  validateTitleFrom,
+  validateDescriptionFrom,
+  validateMaxLength,
 } from "@/libs/validate";
 import { eventData, taskData, noteData } from "@/types/interfaces";
 import {
@@ -43,6 +46,15 @@ export function FormDiary({ onSubmitDiary }: { onSubmitDiary: any }) {
     category: "",
   });
 
+  const Data: eventData = {
+    title: eventData.title.trim(),
+    description: eventData.description.trim(),
+    Date: eventData.Date,
+    required: eventData.required,
+    Time: eventData.Time,
+    category: eventData.category,
+  };
+
   const EventHandleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -58,32 +70,51 @@ export function FormDiary({ onSubmitDiary }: { onSubmitDiary: any }) {
     }
   }, [eventData.required]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const currentDate = new Date().toJSON().slice(0, 10);
-    console.log(currentDate);
 
-    if (!validateDateForm(eventData.Date)) {
+    // Realiza la validación en el título recortado
+    if (!validateTitleFrom(Data.title)) {
+      alert("El título debe contener caracteres válidos.");
+      return;
+    }
+
+    if (validateMaxLength(40, Data.title.length)) {
+      alert("El titulo debe contener maximo 40 caracteres");
+      return;
+    }
+
+    if (!validateDescriptionFrom(Data.description)) {
+      alert("La description debe contener caracteres válidos.");
+      return;
+    }
+    if (validateMaxLength(250, Data.description.length)) {
+      alert("La descripcion debe contener maximo 250 caracteres");
+      return;
+    }
+
+    if (!validateDateForm(Data.Date)) {
       alert("la Fecha del evento debe ser superior a la fecha actual");
       return;
     }
 
-    if (eventData.Date === currentDate) {
-      if (eventData.Time) {
-        if (!validateTimeForm(eventData.Time)) {
+    if (Data.Date === currentDate) {
+      if (Data.Time) {
+        if (!validateTimeForm(Data.Time)) {
           alert("La hora del evento debe ser superior a la hora actual");
           return;
         }
       }
     }
 
-    if (validateCategoryForm(eventData.category)) {
+    if (validateCategoryForm(Data.category)) {
       alert("Debe seleccionar una categoria para su evento");
       return;
     }
 
-    onSubmitDiary(eventData);
+    onSubmitDiary(Data);
   };
 
   return (
@@ -139,10 +170,18 @@ export function FormTask({ onSubmitTask }: { onSubmitTask: any }) {
   const [taskData, setTaskData] = useState<taskData>({
     title: "",
     description: "",
-    category: "",
     required: false,
     Date: null,
+    category: "",
   });
+
+  const Data: taskData = {
+    title: taskData.title.trim(),
+    description: taskData.description.trim(),
+    required: taskData.required,
+    Date: taskData.Date,
+    category: taskData.category,
+  };
 
   const EventHandleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -167,18 +206,38 @@ export function FormTask({ onSubmitTask }: { onSubmitTask: any }) {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (taskData.Date && taskData.required) {
-      if (!validateDateForm(taskData.Date)) {
+
+    if (!validateTitleFrom(Data.title)) {
+      alert("El titulo debe contener caracteres validos.");
+      return;
+    }
+
+    if (validateMaxLength(40, Data.title.length)) {
+      alert("El titulo debe contener maximo 40 caracteres");
+      return;
+    }
+
+    if (!validateDescriptionFrom(Data.description)) {
+      alert("La descripcion debe contener caracteres validos.");
+      return;
+    }
+    if (validateMaxLength(250, Data.description.length)) {
+      alert("La descripcion debe contener maximo 250 caracteres");
+      return;
+    }
+
+    if (Data.Date && Data.required) {
+      if (!validateDateForm(Data.Date)) {
         alert("La fecha para la tarea debe ser superior a la fecha actual");
         return;
       }
     }
 
-    if (validateCategoryForm(taskData.category)) {
+    if (validateCategoryForm(Data.category)) {
       alert("Debe seleccionar una categoria para su tarea");
       return;
     }
-    onSubmitTask(taskData);
+    onSubmitTask(Data);
   };
 
   return (
@@ -230,6 +289,11 @@ export function FormNotas({ onSubmitNotas }: { onSubmitNotas: any }) {
     category: "",
   });
 
+  const Data: noteData = {
+    description: noteData.description.trim(),
+    category: noteData.category.trim(),
+  };
+
   const EventHandleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -238,12 +302,23 @@ export function FormNotas({ onSubmitNotas }: { onSubmitNotas: any }) {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (validateCategoryForm(noteData.category)) {
+
+    if (!validateDescriptionFrom(Data.description)) {
+      alert("La descripcion debe contener caracteres validos");
+      return;
+    }
+
+    if (validateMaxLength(250, Data.description.length)) {
+      alert("La descripcion debe contener maximo 250 caracteres");
+      return;
+    }
+
+    if (validateCategoryForm(Data.category)) {
       alert("Debe seleccionar una categoria para su nota");
       return;
     }
 
-    onSubmitNotas(noteData);
+    onSubmitNotas(Data);
   };
 
   return (

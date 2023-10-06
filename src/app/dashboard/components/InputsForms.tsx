@@ -17,6 +17,7 @@ export function InputTitle({
         value={data}
         onChange={handleChange}
         required
+        maxLength={40}
         className="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-purple-500"
       />
     </div>
@@ -42,6 +43,7 @@ export function InputDescription({
         onChange={handleChange}
         required
         className="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-purple-500"
+        maxLength={250}
       />
     </div>
   );

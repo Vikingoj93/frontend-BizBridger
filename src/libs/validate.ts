@@ -22,3 +22,18 @@ export const validateTimeForm = (eventTime: string) => {
 
   return eventDateTime >= currentTime;
 };
+
+export function validateTitleFrom(value: string) {
+  const trimmedTitle = value.trim();
+    return trimmedTitle !== ""
+  }
+export function validateDescriptionFrom(value: string) {
+  const trimmedDescription = value.trim();
+    return trimmedDescription !== ""
+  }
+
+export function validateMaxLength(max: number, value: number) {
+  const limitCharacters = max
+  const valueData = value
+  return valueData > limitCharacters
+}
