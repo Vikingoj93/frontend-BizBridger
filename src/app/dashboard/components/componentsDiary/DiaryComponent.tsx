@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { FormDiary, FormTask, FormNotas } from "./Forms";
 import { ButtonsDairy } from "./ButtonsDiary";
+import ShowList from './ShowList'
 
 export default function DiaryComponent() {
   const handleSubmitDiary = (eventData: any) => {
@@ -47,9 +48,7 @@ export default function DiaryComponent() {
       </section>
       <section className="w-2/3 p-4 rounded-xl shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out bg-gradient-to-r from-pink-600 to-red-600">
         <div>
-          <h1 className="text-3xl text-white font-bold mb-2">
-            Lista de Pendientes
-          </h1>
+          <ShowList/>
         </div>
       </section>
     </div>
