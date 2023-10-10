@@ -15,7 +15,7 @@ import {
   InputDescription,
   InputTime,
   InputTitle,
-} from "../InputsForms";
+} from "../../InputsForms";
 
 const handleChange = (
   e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
@@ -46,7 +46,7 @@ export function FormDiary({ onSubmitDiary }: { onSubmitDiary: any }) {
     category: "",
   });
 
-  const Data: eventData = {
+  const Data = {
     title: eventData.title.trim(),
     description: eventData.description.trim(),
     Date: eventData.Date,
@@ -119,6 +119,7 @@ export function FormDiary({ onSubmitDiary }: { onSubmitDiary: any }) {
 
   return (
     <form
+    method="post"
       onSubmit={handleSubmit}
       className="flex flex-col bg-gradient-to-r from-purple-600 to-pink-600 border border-white my-4 py-4 px-2 rounded-lg shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out space-y-4"
     >
@@ -175,7 +176,7 @@ export function FormTask({ onSubmitTask }: { onSubmitTask: any }) {
     category: "",
   });
 
-  const Data: taskData = {
+  const Data = {
     title: taskData.title.trim(),
     description: taskData.description.trim(),
     required: taskData.required,
@@ -289,7 +290,7 @@ export function FormNotas({ onSubmitNotas }: { onSubmitNotas: any }) {
     category: "",
   });
 
-  const Data: noteData = {
+  const Data = {
     description: noteData.description.trim(),
     category: noteData.category.trim(),
   };

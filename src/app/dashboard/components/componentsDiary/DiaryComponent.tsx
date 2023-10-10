@@ -1,39 +1,83 @@
 "use client";
-import React, { useState } from "react";
-import { FormDiary, FormTask, FormNotas } from "./Forms";
-import { ButtonsDairy } from "./ButtonsDiary";
-import ShowList from './ShowList'
+import React, { useState, useEffect } from "react";
+import { FormDiary, FormTask, FormNotas } from "./components/Forms";
+import { ButtonsDairy } from "./components/ButtonsDiary";
+import ShowList from "./components/ShowList";
+import axios from "axios";
+import { URL_SERVER } from "@/libs/config";
+import { eventData, eventDataMongoDb } from "@/types/interfaces";
 
 export default function DiaryComponent() {
-  const handleSubmitDiary = (eventData: any) => {
-
-    console.log(eventData);
-  };
-  const handleSubmitTask = (eventData: any) => {
-    console.log(eventData);
-  };
-  const handleSubmitNotas = (eventData: any) => {
-    console.log(eventData);
-  };
-
-  
   const [activeComponent, setActiveComponent] = useState("");
+  const [componentsShowList, setComponentsShowList] = useState("");
+  const [eventData, setEventData] = useState<eventDataMongoDb[]>([]);
+
+  const loadList = async () => {
+    try {
+      const res = await axios
+      .get(`${URL_SERVER}/api/dashboard/diary/events`, {
+        withCredentials: true,
+      })
+      setEventData(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const handleSubmitDiary = async (eventData: eventData) => {
+    try {
+      await axios.post(
+        `${URL_SERVER}/api/dashboard/diary/events`,
+        {
+          title: eventData.title,
+          description: eventData.description,
+          Date: eventData.Date,
+          required: eventData.required,
+          Time: eventData.Time,
+          category: eventData.category,
+        },
+        { withCredentials: true }
+        );
+        loadList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmitTask = (taskData: any) => {
+    console.log(taskData);
+  };
+  const handleSubmitNotes = (notesData: any) => {
+    console.log(notesData);
+  };
 
   const renderComponents = () => {
     switch (activeComponent) {
       case "eventos":
-        return <FormDiary onSubmitDiary={handleSubmitDiary} /> ;
+        return <FormDiary onSubmitDiary={handleSubmitDiary} />;
       case "tareas":
-        return <FormTask onSubmitTask={handleSubmitTask} /> ;
+        return <FormTask onSubmitTask={handleSubmitTask} />;
       case "notas":
-        return <FormNotas onSubmitNotas={handleSubmitNotas} /> ;
+        return <FormNotas onSubmitNotas={handleSubmitNotes} />;
       default:
         break;
     }
   };
 
+  const renderList = ()=>{
+    switch (componentsShowList) {
+      case "eventos":
+        return <ShowList loadList={loadList} eventData={eventData} />;
+      case "tareas":
+        return <FormTask onSubmitTask={handleSubmitTask} />;
+      case "notas":
+        return <FormNotas onSubmitNotas={handleSubmitNotes} />;
+      default:
+        break;
+    }
+  }
 
-  const handleComponent = (key: any) => {
+  const handleComponent = (key: string) => {
     setActiveComponent(key);
   };
 
@@ -41,14 +85,13 @@ export default function DiaryComponent() {
     <div className="container mx-auto flex space-x-4 p-4 bg-gradient-to-r from-purple-600 to-pink-600">
       <section className="w-auto max-w-min p-4 rounded-xl shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out bg-gradient-to-r from-pink-600 to-purple-600">
         <div className="flex flex-wrap gap-4">
-
-        <ButtonsDairy handleComponent={handleComponent}/>
-      {renderComponents()}
+          <ButtonsDairy handleComponent={handleComponent} />
+          {renderComponents()}
         </div>
       </section>
-      <section className="w-2/3 p-4 rounded-xl shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out bg-gradient-to-r from-pink-600 to-red-600">
+      <section className="w-2/3 p-4 rounded-xl shadow-2xl transform hover:scale-100 transition duration-300 ease-in-out bg-gradient-to-r from-pink-600 to-red-600">
         <div>
-          <ShowList/>
+          <ShowList loadList={loadList} eventData={eventData} />
         </div>
       </section>
     </div>

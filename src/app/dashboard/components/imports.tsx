@@ -1,7 +1,7 @@
   import dynamic from 'next/dynamic'
 
   //import panel  
-  export const Profile = dynamic(()=> import('./Profile'));
+  export const Profile = dynamic(()=> import('./profileComponent/Profile'));
   export const Agenda = dynamic(()=> import('./componentsDiary/DiaryComponent'));
   export const Laboral = dynamic(()=> import('./componentsDiary/DiaryComponent'))
   export const Finanzas = dynamic(()=> import('./componentsDiary/DiaryComponent'))

@@ -24,3 +24,14 @@ export interface noteData {
   description: string;
   category: string;
 }
+export interface eventDataMongoDb {
+  Date: string;
+  Time: null | string;
+  category: string;
+  description: string;
+  required: boolean;
+  title: string;
+  userId: string;
+  __v: number;
+  _id: string;
+}

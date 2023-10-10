@@ -38,7 +38,7 @@ export function ButtonsDairy({handleComponent}: {handleComponent: any}) {
               {Object.entries(item.button).map(([key, value], indexButton) => (
                 <button
                   key={indexButton}
-                  className={`text-sm text-white font-bold ${cssButton(key)}`}
+                  className={`text-sm text-white font-bold hover:scale-100 ${cssButton(key)}`}
                   onClick={() => {
                     handleComponent(key);
                   }}

@@ -1,6 +1,5 @@
 "use client";
-import Main from "./Main";
-import Panel from './panel'
+import Panel from './components/panel'
 import DashboardContext from "../../context/DashboardContext";
 import {
   Agenda,
@@ -70,7 +69,7 @@ export default function DashboardPage() {
     <div className="flex flex-col sm:flex-row bg-gradient-to-r from-purple-600 to-pink-600">
       <DashboardContext>
        <Panel handleComponent={handleComponent} />
-        <Main>{renderComponents()}</Main>
+        {renderComponents()}
       </DashboardContext>
     </div>
   );
