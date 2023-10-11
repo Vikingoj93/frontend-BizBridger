@@ -7,7 +7,12 @@ import {
   validateDescriptionFrom,
   validateMaxLength,
 } from "@/libs/validate";
-import { eventData, taskData, noteData } from "@/types/interfaces";
+import {
+  eventData,
+  taskData,
+  noteData,
+  eventDataMongoDb,
+} from "@/types/interfaces";
 import {
   InputCategory,
   InputCheckbox,
@@ -16,6 +21,16 @@ import {
   InputTime,
   InputTitle,
 } from "../../InputsForms";
+import {date, hours} from '@/libs/config'
+
+const dataReset = {
+  title: "",
+  description: "",
+  Date: date,
+  required: false,
+  Time: null,
+  category: "",
+};
 
 const handleChange = (
   e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
@@ -36,11 +51,33 @@ const handleChange = (
   }
 };
 
-export function FormDiary({ onSubmitDiary }: { onSubmitDiary: any }) {
+export function FormDiary({
+  onSubmitEvent,
+  onSubmitEditEvent,
+  isEditing,
+  cancelEdit,
+  eventDataEdit,
+}: {
+  onSubmitEvent: any;
+  onSubmitEditEvent: any;
+  isEditing: any;
+  cancelEdit: any;
+  eventDataEdit: eventDataMongoDb | undefined;
+}) {
+  useEffect(() => {
+    if (isEditing) {
+      if (eventDataEdit) {
+        setEventData(eventDataEdit);
+      }
+    } else {
+      setEventData(dataReset);
+    }
+  }, [isEditing]);
+
   const [eventData, setEventData] = useState<eventData>({
     title: "",
     description: "",
-    Date: new Date().toJSON().slice(0, 10),
+    Date: date,
     required: false,
     Time: null,
     category: "",
@@ -73,7 +110,7 @@ export function FormDiary({ onSubmitDiary }: { onSubmitDiary: any }) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const currentDate = new Date().toJSON().slice(0, 10);
+    const currentDate = date;
 
     // Realiza la validación en el título recortado
     if (!validateTitleFrom(Data.title)) {
@@ -114,12 +151,18 @@ export function FormDiary({ onSubmitDiary }: { onSubmitDiary: any }) {
       return;
     }
 
-    onSubmitDiary(Data);
+    if (isEditing) {
+      onSubmitEditEvent(eventData);
+      setEventData(dataReset);
+    } else {
+      onSubmitEvent(Data);
+      //setEventData(dataReset);
+    }
   };
 
   return (
     <form
-    method="post"
+      method="post"
       onSubmit={handleSubmit}
       className="flex flex-col bg-gradient-to-r from-purple-600 to-pink-600 border border-white my-4 py-4 px-2 rounded-lg shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out space-y-4"
     >
@@ -157,12 +200,32 @@ export function FormDiary({ onSubmitDiary }: { onSubmitDiary: any }) {
         handleChange={EventHandleChange}
       />
 
-      <button
-        type="submit"
-        className="text-sm text-white font-bold bg-pink-400 hover:bg-pink-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out"
-      >
-        Guardar
-      </button>
+      {isEditing ? (
+        <div>
+          <button
+            type="submit"
+            className="text-sm text-white font-bold bg-pink-400 hover:bg-pink-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+          >
+            Actualizar
+          </button>
+          <button
+            type="button"
+            className="text-sm text-white font-bold bg-red-400 hover:bg-red-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+            onClick={() => {
+              cancelEdit();
+            }}
+          >
+            Cancelar
+          </button>
+        </div>
+      ) : (
+        <button
+          type="submit"
+          className="text-sm text-white font-bold bg-pink-400 hover:bg-pink-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+        >
+          Guardar
+        </button>
+      )}
     </form>
   );
 }
@@ -200,7 +263,7 @@ export function FormTask({ onSubmitTask }: { onSubmitTask: any }) {
     if (taskData.required) {
       setTaskData((prevData) => ({
         ...prevData,
-        Date: new Date().toJSON().slice(0, 10),
+        Date: date,
       }));
     }
   }, [taskData.required]);

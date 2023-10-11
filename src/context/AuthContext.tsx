@@ -25,8 +25,6 @@ export default function AuthContext({children}:{children: React.ReactNode}) {
     })
   },[])
 
-  console.log(authenticated)
-
   return (
     <auth.Provider value={authenticated}>{children}</auth.Provider>
   )

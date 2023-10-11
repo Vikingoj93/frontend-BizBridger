@@ -1,7 +1,9 @@
+import {date, hours} from '@/libs/config'
+
 export const validateDateForm = (eventDate: string) => {
-  const date = new Date(eventDate).toJSON().slice(0, 10);
-  const currentDate = new Date().toJSON().slice(0, 10);
-  return date >= currentDate;
+  const dateForm = new Date(eventDate).toJSON().slice(0, 10);
+  const currentDate = date;
+  return dateForm >= currentDate;
 };
 
 export const validateCategoryForm = (category: string) => {
@@ -10,17 +12,8 @@ export const validateCategoryForm = (category: string) => {
 };
 
 export const validateTimeForm = (eventTime: string) => {
-  const currentTime = new Date();
-  const [hours, minutes] = eventTime.split(":").map(Number); // Divide la hora en horas y minutos
-  const eventDateTime = new Date(
-    currentTime.getFullYear(),
-    currentTime.getMonth(),
-    currentTime.getDate(),
-    hours,
-    minutes
-  );
-
-  return eventDateTime >= currentTime;
+  const currentTime = hours;
+  return eventTime >= currentTime;
 };
 
 export function validateTitleFrom(value: string) {
