@@ -23,6 +23,7 @@ const config: Config = {
         buttonRed: "#FF312E",
         buttonBlue: "#32C5E6",
       },
+      
     },
     plugins: [],
   },

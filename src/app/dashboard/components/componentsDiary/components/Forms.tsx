@@ -62,7 +62,7 @@ export function FormDiary({
   onSubmitEditEvent: any;
   isEditing: any;
   cancelEdit: any;
-  eventDataEdit: eventDataMongoDb | undefined;
+  eventDataEdit: eventDataMongoDb | undefined,
 }) {
   useEffect(() => {
     if (isEditing) {
@@ -201,7 +201,7 @@ export function FormDiary({
       />
 
       {isEditing ? (
-        <div>
+        <div className="flex justify-between">
           <button
             type="submit"
             className="text-sm text-white font-bold bg-pink-400 hover:bg-pink-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out"

@@ -1,0 +1,28 @@
+/* custom.css */
+.modal {
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+  }
+  
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+  }
+
+  .react-datepicker-wrapper input::placeholder {
+    color: white; /* Cambia el color del marcador de posición */
+    background-color: rgba(192, 132, 252, 1); /* Cambia el fondo del input */
+  }

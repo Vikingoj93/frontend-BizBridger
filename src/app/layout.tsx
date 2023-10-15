@@ -16,10 +16,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthContext>
+        <div id="root">
+          <AuthContext>
             <NavBar />
             {children}
-        </AuthContext>
+          </AuthContext>
+        </div>
       </body>
     </html>
   );

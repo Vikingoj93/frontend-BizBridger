@@ -60,7 +60,7 @@ export default function Panel({ handleComponent }: { handleComponent: any }) {
   };
 
   return (
-    <div className="flex flex-col bg-gradient-to-tlr from-purple-600 to-pink-600 text-white w-1/4 min-h-screen p-4">
+    <div className=" flex flex-col bg-gradient-to-tlr from-purple-600 to-pink-600 text-white w-1/4 min-h-screen p-4">
       <section className="flex flex-col h-full">
         {buttons.map((item, index) => (
           <div className="mb-2" key={index}>
