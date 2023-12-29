@@ -3,7 +3,7 @@
   //import panel  
   export const Profile = dynamic(()=> import('./profileComponent/Profile'));
   export const Agenda = dynamic(()=> import('./componentsDiary/DiaryComponent'));
-  export const Laboral = dynamic(()=> import('./componentsLabor/ComponentLabor'))
+  export const Laboral = dynamic(()=> import('./componentsLabor/ComponentTask'))
   export const Finanzas = dynamic(()=> import('./componentsDiary/DiaryComponent'))
   export const Notas = dynamic(()=> import('./componentsDiary/DiaryComponent'))
   export const Inventario = dynamic(()=> import('./componentsDiary/DiaryComponent'))
