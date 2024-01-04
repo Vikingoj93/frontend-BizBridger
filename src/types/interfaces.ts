@@ -35,3 +35,13 @@ export interface eventDataMongoDb {
   __v: number;
   _id: string;
 }
+export interface taskDataMongoDb {
+  title: string;
+  description: string;
+  category: string;
+  required: boolean;
+  Date: null | string;
+  userId: string;
+  __v: number;
+  _id: string;
+}

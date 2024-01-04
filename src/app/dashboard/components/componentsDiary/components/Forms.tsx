@@ -12,6 +12,7 @@ import {
   taskData,
   noteData,
   eventDataMongoDb,
+  taskDataMongoDb,
 } from "@/types/interfaces";
 import {
   InputCategory,
@@ -21,7 +22,7 @@ import {
   InputTime,
   InputTitle,
 } from "../../InputsForms";
-import {date, hours} from '@/libs/config'
+import { date, hours } from "@/libs/config";
 
 const dataReset = {
   title: "",
@@ -51,19 +52,26 @@ const handleChange = (
   }
 };
 
-export function FormDiary({
+export function FormEvent({
   onSubmitEvent,
   onSubmitEditEvent,
   isEditing,
   cancelEdit,
   eventDataEdit,
+  loadList
 }: {
   onSubmitEvent: any;
   onSubmitEditEvent: any;
   isEditing: any;
   cancelEdit: any;
   eventDataEdit: eventDataMongoDb | undefined,
+  loadList: any
 }) {
+
+  useEffect(()=>{
+    loadList("events")
+  }, [])
+
   useEffect(() => {
     if (isEditing) {
       if (eventDataEdit) {
@@ -156,7 +164,6 @@ export function FormDiary({
       setEventData(dataReset);
     } else {
       onSubmitEvent(Data);
-      //setEventData(dataReset);
     }
   };
 
@@ -230,7 +237,37 @@ export function FormDiary({
   );
 }
 
-export function FormTask({ onSubmitTask }: { onSubmitTask: any }) {
+export function FormTask({
+  onSubmitTask,
+  onSubmitEditTask,
+  isEditing,
+  cancelEdit,
+  taskDataEdit,
+  loadList
+}: {
+  onSubmitTask: any;
+  isEditing: any;
+  onSubmitEditTask: any;
+  cancelEdit: any;
+  taskDataEdit: taskDataMongoDb | undefined,
+  loadList: any
+  
+}) {
+
+  useEffect(()=>{
+    loadList("task")
+  },[])
+
+  useEffect(() => {
+    if (isEditing) {
+      if (taskDataEdit) {
+        setTaskData(taskDataEdit);
+      }
+    } else {
+      setTaskData(dataReset);
+    }
+  }, [isEditing]);
+
   const [taskData, setTaskData] = useState<taskData>({
     title: "",
     description: "",
@@ -301,7 +338,14 @@ export function FormTask({ onSubmitTask }: { onSubmitTask: any }) {
       alert("Debe seleccionar una categoria para su tarea");
       return;
     }
-    onSubmitTask(Data);
+    
+    if (isEditing) {
+      onSubmitEditTask(taskData);
+      setTaskData(dataReset);
+    } else {
+      onSubmitTask(Data);
+    }
+
   };
 
   return (
@@ -337,12 +381,33 @@ export function FormTask({ onSubmitTask }: { onSubmitTask: any }) {
         handleChange={EventHandleChange}
       />
 
-      <button
-        type="submit"
-        className="text-sm text-white font-bold bg-blue-400 hover:bg-blue-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out"
-      >
-        Guardar
-      </button>
+{isEditing ? (
+        <div className="flex justify-between">
+          <button
+            type="submit"
+            className="text-sm text-white font-bold bg-pink-400 hover:bg-pink-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+          >
+            Actualizar
+          </button>
+          <button
+            type="button"
+            className="text-sm text-white font-bold bg-red-400 hover:bg-red-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+            onClick={() => {
+              cancelEdit();
+            }}
+          >
+            Cancelar
+          </button>
+        </div>
+      ) : (
+        <button
+          type="submit"
+          className="text-sm text-white font-bold bg-pink-400 hover:bg-pink-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+        >
+          Guardar
+        </button>
+      )}
+
     </form>
   );
 }

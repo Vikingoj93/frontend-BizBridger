@@ -1,28 +1,39 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { FormDiary, FormTask, FormNotas } from "./components/Forms";
+import { FormEvent, FormTask, FormNotas } from "./components/Forms";
 import { ButtonsDairy } from "./components/ButtonsDiary";
 import ShowList from "./components/ShowList";
 import axios from "axios";
 import { URL_SERVER } from "@/libs/config";
-import { eventDataMongoDb } from "@/types/interfaces";
+import { eventDataMongoDb, taskDataMongoDb } from "@/types/interfaces";
 
 export default function DiaryComponent() {
-  const [eventDataEdit, setEventDataEdit] = useState<eventDataMongoDb>();
-  const [isEditing, setIsEditing] = useState(false);
+
+  //componentes para renderizar componentes
   const [activeComponent, setActiveComponent] = useState("");
   const [componentsShowList, setComponentsShowList] = useState("");
-  const [eventData, setEventData] = useState<eventDataMongoDb[]>([]);
 
-  const loadList = async () => {
+
+  // estados para manjedar cuanto se este editando algun evento,tarea,nota
+  const [isEditing, setIsEditing] = useState(false);
+  const [eventDataEdit, setEventDataEdit] = useState<eventDataMongoDb>();
+  const [taskDataEdit, setTaskDataEdit] = useState<taskDataMongoDb>();
+  
+
+  //interfaces de estados
+  const [eventData, setEventData] = useState<eventDataMongoDb[]>([]);
+  const [taskData, setTaskData] = useState<taskDataMongoDb[]>([]);
+
+  const loadList = async (event: string) => {
     try {
-      const res = await axios.get(`${URL_SERVER}/api/dashboard/diary/events`, {
+      const res = await axios.get(`${URL_SERVER}/api/dashboard/diary/${event}`, {
         withCredentials: true,
       });
       setEventData(res.data);
     } catch (error) {
       console.log(error);
     }
+    return
   };
 
   // crear un nuevo evento
@@ -48,7 +59,7 @@ export default function DiaryComponent() {
           "No se pudo registrar el evento por favor verifique los datos"
         );
       }
-      loadList();
+      loadList("events");
     } catch (error) {
       console.log(error);
     }
@@ -73,21 +84,29 @@ export default function DiaryComponent() {
       console.log("evento editado satifactoriamente");
     }
 
-    loadList();
+    loadList('events');
 
     setIsEditing(false);
   };
 
+  // eliminar un evento existente
   const handleDelete = async (event: eventDataMongoDb) => {
     const res = await axios.delete(
       `${URL_SERVER}/api/dashboard/diary/events?user=${event?.userId}&event=${event?._id}`, {withCredentials: true})
-      loadList()
+      loadList('events')
       console.log(res)
   };
 
+  // crear una nueva tarea
   const handleSubmitTask = (taskData: any) => {
     console.log(taskData);
   };
+
+  const onSubmitEditTask = ()=>{
+  return
+  }
+
+ 
   const handleSubmitNotes = (notesData: any) => {
     console.log(notesData);
   };
@@ -96,16 +115,17 @@ export default function DiaryComponent() {
     switch (activeComponent) {
       case "eventos":
         return (
-          <FormDiary
+          <FormEvent
             onSubmitEvent={handleSubmitEvent}
             onSubmitEditEvent={onSubmitEditEvent}
             isEditing={isEditing}
             cancelEdit={cancelEdit}
             eventDataEdit={eventDataEdit}
+            loadList={loadList} 
           />
         );
       case "tareas":
-        return <FormTask onSubmitTask={handleSubmitTask} />;
+        return <FormTask onSubmitTask={handleSubmitTask} cancelEdit={cancelEdit} isEditing={isEditing} onSubmitEditTask={onSubmitEditTask} taskDataEdit={taskDataEdit} loadList={loadList} />;
       case "notas":
         return <FormNotas onSubmitNotas={handleSubmitNotes} />;
       default:

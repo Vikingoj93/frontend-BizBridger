@@ -1,8 +1,18 @@
 
 function GestionPersonal() {
+
+  const colorsBase = {
+    gradientFrom: 'from-purple-600',
+    gradientTo: 'to-pink-600'
+  }
+  const colorsCard = {
+    gradientFrom: 'from-pink-600',
+    gradientTo: 'to-red-600'
+  }
+
   return (
-    <div className="bg-gradient-to-r from-purple-600 to-pink-600 min-h-screen">
-      <section className="container mx-auto py-12">
+    <div className={`bg-gradient-to-r ${colorsBase.gradientFrom} ${colorsBase.gradientTo} flex`}>
+      <section className={`container bg-gradient-to-r ${colorsCard.gradientFrom} ${colorsCard.gradientTo} mx-auto p-12 rounded-lg `}>
         <h2 className="text-3xl font-semibold text-white mb-6">
           Simplifica tu Vida Cotidiana con BizBridger
         </h2>
@@ -14,7 +24,7 @@ function GestionPersonal() {
         </p>
 
         {/* Descripción Extendida */}
-        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg shadow-lg p-6 mb-10 text-white">
+        <div className={`bg-gradient-to-r ${colorsCard.gradientFrom} ${colorsCard.gradientTo} rounded-lg shadow-lg p-6 mb-10 text-white`}>
           <p className="text-lg text-white mb-2">
             ¿Necesitas llevar un control meticuloso de tu día a día? BizBridger
             es la solución perfecta. Puedes gestionar tus tareas, actividades,
@@ -35,13 +45,13 @@ function GestionPersonal() {
         </div>
 
         {/* Ejemplos de Casos de Uso */}
-        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg shadow-lg p-6 text-white">
+        <div className={`bg-gradient-to-r ${colorsCard.gradientFrom} ${colorsCard.gradientTo} rounded-lg shadow-lg p-6 text-white`}>
           <h3 className="text-2xl font-semibold mb-4">Casos de Uso</h3>
 
           {/* Agregar aquí los otros ejemplos de casos de uso */}
           <div className="flex flex-wrap -mx-4">
             <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-4">
-              <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-6 rounded-lg shadow-lg">
+              <div className={`bg-gradient-to-r ${colorsCard.gradientFrom} ${colorsCard.gradientTo} p-6 rounded-lg shadow-lg`}>
                 <h4 className="text-xl font-semibold mb-2">Planificación de Tareas Diarias</h4>
                 <p className="text-lg text-white">
                   Ana se siente abrumada por la cantidad de tareas que tiene que
@@ -53,7 +63,7 @@ function GestionPersonal() {
             </div>
 
             <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-4">
-              <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-6 rounded-lg shadow-lg">
+              <div className={`bg-gradient-to-r ${colorsCard.gradientFrom} ${colorsCard.gradientTo} p-6 rounded-lg shadow-lg`}>
                 <h4 className="text-xl font-semibold mb-2">Gastos Imprevistos</h4>
                 <p className="text-lg text-white">
                   Juan recibe una factura inesperada que olvidó pagar. Con
