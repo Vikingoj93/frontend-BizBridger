@@ -57,20 +57,15 @@ export function FormEvent({
   onSubmitEditEvent,
   isEditing,
   cancelEdit,
-  eventDataEdit,
-  loadList
+  eventDataEdit
 }: {
   onSubmitEvent: any;
   onSubmitEditEvent: any;
   isEditing: any;
   cancelEdit: any;
   eventDataEdit: eventDataMongoDb | undefined,
-  loadList: any
 }) {
 
-  useEffect(()=>{
-    loadList("events")
-  }, [])
 
   useEffect(() => {
     if (isEditing) {
@@ -242,21 +237,15 @@ export function FormTask({
   onSubmitEditTask,
   isEditing,
   cancelEdit,
-  taskDataEdit,
-  loadList
+  taskDataEdit
 }: {
   onSubmitTask: any;
   isEditing: any;
   onSubmitEditTask: any;
   cancelEdit: any;
   taskDataEdit: taskDataMongoDb | undefined,
-  loadList: any
   
 }) {
-
-  useEffect(()=>{
-    loadList("task")
-  },[])
 
   useEffect(() => {
     if (isEditing) {
@@ -271,15 +260,15 @@ export function FormTask({
   const [taskData, setTaskData] = useState<taskData>({
     title: "",
     description: "",
-    required: false,
-    Date: null,
+    required: true,
+    Date: date,
     category: "",
   });
 
   const Data = {
     title: taskData.title.trim(),
     description: taskData.description.trim(),
-    required: taskData.required,
+    required: true,
     Date: taskData.Date,
     category: taskData.category,
   };
@@ -289,21 +278,6 @@ export function FormTask({
   ) => {
     handleChange(e, setTaskData);
   };
-
-  useEffect(() => {
-    if (!taskData.required) {
-      setTaskData((prevData) => ({
-        ...prevData,
-        Date: null,
-      }));
-    }
-    if (taskData.required) {
-      setTaskData((prevData) => ({
-        ...prevData,
-        Date: date,
-      }));
-    }
-  }, [taskData.required]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -363,18 +337,6 @@ export function FormTask({
         handleChange={EventHandleChange}
         label={"Descripcion para la tarea"}
       />
-      <InputCheckbox
-        data={taskData.required}
-        handleChange={EventHandleChange}
-        label={"¿Requiere una fecha para la tarea?"}
-      />
-      {taskData.required && (
-        <InputDate
-          data={taskData.Date === null ? "" : taskData.Date}
-          handleChange={EventHandleChange}
-          label={"Fecha:"}
-        />
-      )}
 
       <InputCategory
         data={taskData.category}

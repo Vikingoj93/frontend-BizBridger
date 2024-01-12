@@ -5,35 +5,37 @@ import { ButtonsDairy } from "./components/ButtonsDiary";
 import ShowList from "./components/ShowList";
 import axios from "axios";
 import { URL_SERVER } from "@/libs/config";
-import { eventDataMongoDb, taskDataMongoDb } from "@/types/interfaces";
+import { eventDataMongoDb } from "@/types/interfaces";
 
 export default function DiaryComponent() {
-
   //componentes para renderizar componentes
   const [activeComponent, setActiveComponent] = useState("");
   const [componentsShowList, setComponentsShowList] = useState("");
 
-
   // estados para manjedar cuanto se este editando algun evento,tarea,nota
   const [isEditing, setIsEditing] = useState(false);
   const [eventDataEdit, setEventDataEdit] = useState<eventDataMongoDb>();
-  const [taskDataEdit, setTaskDataEdit] = useState<taskDataMongoDb>();
-  
+  const [taskDataEdit, setTaskDataEdit] = useState<eventDataMongoDb>();
 
   //interfaces de estados
   const [eventData, setEventData] = useState<eventDataMongoDb[]>([]);
-  const [taskData, setTaskData] = useState<taskDataMongoDb[]>([]);
+  const [taskData, setTaskData] = useState<eventDataMongoDb[]>([]);
 
-  const loadList = async (event: string) => {
+  //cargar listas para mostrar
+  const loadList = async (event: string, setData: any) => {
     try {
-      const res = await axios.get(`${URL_SERVER}/api/dashboard/diary/${event}`, {
-        withCredentials: true,
-      });
-      setEventData(res.data);
+      const res = await axios.get(
+        `${URL_SERVER}/api/dashboard/diary/${event}`,
+        {
+          withCredentials: true,
+        }
+      );
+      setData("");
+      setData(res.data);
     } catch (error) {
       console.log(error);
     }
-    return
+    return;
   };
 
   // crear un nuevo evento
@@ -59,7 +61,7 @@ export default function DiaryComponent() {
           "No se pudo registrar el evento por favor verifique los datos"
         );
       }
-      loadList("events");
+      loadList("events", setEventData);
     } catch (error) {
       console.log(error);
     }
@@ -84,7 +86,7 @@ export default function DiaryComponent() {
       console.log("evento editado satifactoriamente");
     }
 
-    loadList('events');
+    loadList("events", setEventData);
 
     setIsEditing(false);
   };
@@ -92,21 +94,72 @@ export default function DiaryComponent() {
   // eliminar un evento existente
   const handleDelete = async (event: eventDataMongoDb) => {
     const res = await axios.delete(
-      `${URL_SERVER}/api/dashboard/diary/events?user=${event?.userId}&event=${event?._id}`, {withCredentials: true})
-      loadList('events')
-      console.log(res)
+      `${URL_SERVER}/api/dashboard/diary/events?user=${event?.userId}&event=${event?._id}`,
+      { withCredentials: true }
+    );
+    loadList("events", setEventData);
+    console.log(res);
   };
 
   // crear una nueva tarea
-  const handleSubmitTask = (taskData: any) => {
-    console.log(taskData);
+  const handleSubmitTask = async (taskData: eventDataMongoDb) => {
+    try {
+      const res = await axios.post(
+        `${URL_SERVER}/api/dashboard/diary/tasks`,
+        {
+          title: taskData.title,
+          description: taskData.description,
+          category: taskData.category,
+          Date: taskData.Date,
+          required: taskData.required,
+        },
+        { withCredentials: true }
+      );
+
+      if (res.status === 200) {
+        console.log("La tarea se registro con Exito!");
+      } else {
+        console.log(
+          "No se pudo registrar la tarea por favor verifique los datos"
+        );
+      }
+      loadList("tasks", setTaskData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const onSubmitEditTask = ()=>{
-  return
-  }
+  const onSubmitEditTask = async (eventData: eventDataMongoDb) => {
+    const res = await axios.put(
+      `${URL_SERVER}/api/dashboard/diary/tasks?user=${eventDataEdit?.userId}&task=${eventDataEdit?._id}`,
+      {
+        title: eventData.title,
+        description: eventData.description,
+        Date: eventData.Date,
+        required: eventData.required,
+        Time: eventData.Time,
+        category: eventData.category,
+      },
+      { withCredentials: true }
+    );
 
- 
+    if (res.status === 200) {
+      console.log("evento editado satifactoriamente");
+    }
+
+    loadList("tasks", setTaskData);
+
+    setIsEditing(false);
+  };
+
+  const handleDeleteTask = async (event: eventDataMongoDb) => {
+    const res = await axios.delete(
+      `${URL_SERVER}/api/dashboard/diary/tasks?user=${event?.userId}&task=${event?._id}`,
+      { withCredentials: true }
+    );
+    loadList("tasks", setTaskData);
+  };
+
   const handleSubmitNotes = (notesData: any) => {
     console.log(notesData);
   };
@@ -121,11 +174,19 @@ export default function DiaryComponent() {
             isEditing={isEditing}
             cancelEdit={cancelEdit}
             eventDataEdit={eventDataEdit}
-            loadList={loadList} 
+
           />
         );
       case "tareas":
-        return <FormTask onSubmitTask={handleSubmitTask} cancelEdit={cancelEdit} isEditing={isEditing} onSubmitEditTask={onSubmitEditTask} taskDataEdit={taskDataEdit} loadList={loadList} />;
+        return (
+          <FormTask
+            onSubmitTask={handleSubmitTask}
+            cancelEdit={cancelEdit}
+            isEditing={isEditing}
+            onSubmitEditTask={onSubmitEditTask}
+            taskDataEdit={eventDataEdit}
+          />
+        );
       case "notas":
         return <FormNotas onSubmitNotas={handleSubmitNotes} />;
       default:
@@ -138,14 +199,25 @@ export default function DiaryComponent() {
       case "eventos":
         return (
           <ShowList
+            setData={setEventData}
             loadList={loadList}
             eventData={eventData}
             eventEdit={eventEdit}
             handleDelete={handleDelete}
+            string={"events"}
           />
         );
       case "tareas":
-        return "";
+        return (
+          <ShowList
+            setData={setTaskData}
+            loadList={loadList}
+            eventData={taskData}
+            eventEdit={eventEdit}
+            handleDelete={handleDeleteTask}
+            string={"tasks"}
+          />
+        );
       case "notas":
         return "";
       default:

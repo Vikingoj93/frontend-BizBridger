@@ -2,7 +2,7 @@ import { eventDataMongoDb } from "@/types/interfaces";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { date } from "@/libs/config";
+import { date, hours } from "@/libs/config";
 import Modal from "react-modal";
 import "./custom.css";
 
@@ -13,22 +13,31 @@ export default function ShowList({
   eventData,
   eventEdit,
   handleDelete,
+  setData,
+  string,
 }: {
   loadList: any;
   eventData: eventDataMongoDb[];
   eventEdit: any;
   handleDelete: any;
+  setData: any;
+  string: string;
 }) {
   const [selectedCategory, setSelectedCategory] = useState("todas");
   const [selectedDateOrder, setSelectedDateOrder] = useState("recientes");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [showPastEvents, setShowPastEvents] = useState(false);
+  const [showPastEvents, setShowPastEvents] = useState(true);
   const [lightboxIsOpen, setLightboxIsOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<eventDataMongoDb | null>(
     null
   );
 
-  const openLightbox = (event: any) => {
+  useEffect(() => {
+    loadList(string, setData);
+    console.log(string);
+  }, [string]);
+
+  const openLightbox = (event: eventDataMongoDb) => {
     setSelectedEvent(event);
     setLightboxIsOpen(true);
   };
@@ -64,22 +73,22 @@ export default function ShowList({
       // Filtrar eventos iguales o superiores a la fecha actual
       const currentDate = date;
       const eventDate = new Date(event.Date).toISOString().slice(0, 10);
-
       // Si se marca el checkbox de mostrar eventos pasados, muestra todos los eventos
       if (showPastEvents) {
-        return eventDate < currentDate;
+        return eventDate <= currentDate;
       }
-      return eventDate >= currentDate;
+      return eventDate > currentDate;
     })
-    .sort((eventA, eventB) => {
+    .sort((eventA, eventB): eventDataMongoDb | any => {
+      // Lógica de ordenamiento existente para eventos con fecha
       if (showPastEvents) {
         if (selectedDateOrder === "recientes") {
           return (
-            new Date(eventB.Date).getTime() - new Date(eventA.Date).getTime()
+            new Date(eventA.Date).getTime() - new Date(eventB.Date).getTime()
           );
         } else {
           return (
-            new Date(eventA.Date).getTime() - new Date(eventB.Date).getTime()
+            new Date(eventB.Date).getTime() - new Date(eventA.Date).getTime()
           );
         }
       }
@@ -93,16 +102,29 @@ export default function ShowList({
         );
       }
     });
+    
 
-  useEffect(() => {
-    loadList();
-  }, []);
+  const title = {
+    event: "Eventos",
+    task: "Tareas",
+    note: "Notas",
+  };
+
+  const renderTitle = () => {
+    switch (string) {
+      case "events":
+        return title.event;
+      case "tasks":
+        return title.task;
+
+      default:
+        break;
+    }
+  };
 
   return (
     <section className="bg-gradient-to-br from-purple-600 to-pink-600 p-4 shadow-2xl">
-      <h1 className="text-2xl font-bold text-white mb-4">
-        Eventos Registrados
-      </h1>
+      <h1 className="text-2xl font-bold text-white mb-4">{renderTitle()}</h1>
       <div className="w-full  rounded shadow-2xl p-4 mb-4">
         <div className="flex justify-center items-start space-x-4 bg-gradient-to-br from-purple-600 to-pink-600 p-4 shadow-2xl">
           <div className="w-1/4 p-2">
@@ -158,7 +180,7 @@ export default function ShowList({
           </div>
           <div className="w-1/4 p-2 flex flex-col items-center space-x-2">
             <label htmlFor="showPastEvents" className="block text-white mb-2">
-              Eventos pasados
+              {renderTitle()} pendientes
             </label>
             <div className="relative flex  items-center">
               <div
@@ -167,7 +189,7 @@ export default function ShowList({
               >
                 <div
                   className={`bg-gray-600 w-4 h-4 rounded-full shadow-md transform transition duration-300 ease-in-out ${
-                    showPastEvents ? "translate-x-4 bg-purple-600" : ""
+                    showPastEvents ? "" : "translate-x-4 bg-purple-600"
                   }`}
                 />
               </div>
@@ -195,10 +217,16 @@ export default function ShowList({
                     </p>
                     <p className="text-sm">{event.category}</p>
                   </div>
-                  <div className="mb-2">
-                    <p className="text-sm">{event.Date}</p>
-                    {event.required && <p className="text-sm">{event.Time}</p>}
-                  </div>
+                  {event.Date ? (
+                    <div className="mb-2">
+                      <p className="text-sm">{event.Date}</p>
+                    </div>
+                  ) : null}
+                  {event.required && event.Time ? (
+                    <div className="mb-2">
+                      <p className="text-sm">{event.Time}</p>
+                    </div>
+                  ) : null}
                   <div className="flex space-x-2">
                     {new Date(event.Date).toISOString().slice(0, 10) >= date ? (
                       <>
@@ -253,9 +281,7 @@ export default function ShowList({
         {selectedEvent && (
           <div className="w-96 mx-auto p-4 bg-white rounded shadow-2xl">
             <div className="flex justify-between">
-              <h2 className="text-xl font-bold mb-4">
-                 {selectedEvent.title}
-              </h2>
+              <h2 className="text-xl font-bold mb-4">{selectedEvent.title}</h2>
               <h2 className="text-xl font-bold mb-4">
                 <strong>{selectedEvent.Date}</strong>
               </h2>
