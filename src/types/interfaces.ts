@@ -23,6 +23,8 @@ export interface taskData {
 export interface noteData {
   description: string;
   category: string;
+  
+  Date: string;
 }
 export interface eventDataMongoDb {
   Date: string;
@@ -41,6 +43,15 @@ export interface taskDataMongoDb {
   category: string;
   required: boolean;
   Date: null | string;
+  userId: string;
+  __v: number;
+  _id: string;
+}
+export interface noteDataMongoDb {
+  
+  description: string;
+  Date: null | string;
+  category: string;
   userId: string;
   __v: number;
   _id: string;

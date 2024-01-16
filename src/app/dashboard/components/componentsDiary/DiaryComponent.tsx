@@ -15,11 +15,11 @@ export default function DiaryComponent() {
   // estados para manjedar cuanto se este editando algun evento,tarea,nota
   const [isEditing, setIsEditing] = useState(false);
   const [eventDataEdit, setEventDataEdit] = useState<eventDataMongoDb>();
-  const [taskDataEdit, setTaskDataEdit] = useState<eventDataMongoDb>();
 
   //interfaces de estados
   const [eventData, setEventData] = useState<eventDataMongoDb[]>([]);
   const [taskData, setTaskData] = useState<eventDataMongoDb[]>([]);
+  const [noteData, setNoteData] = useState<eventDataMongoDb[]>([]);
 
   //cargar listas para mostrar
   const loadList = async (event: string, setData: any) => {
@@ -30,8 +30,10 @@ export default function DiaryComponent() {
           withCredentials: true,
         }
       );
+
       setData("");
       setData(res.data);
+      console.log(res.data)
     } catch (error) {
       console.log(error);
     }
@@ -160,8 +162,57 @@ export default function DiaryComponent() {
     loadList("tasks", setTaskData);
   };
 
-  const handleSubmitNotes = (notesData: any) => {
-    console.log(notesData);
+  const handleSubmitNote = async (notesData: eventDataMongoDb) => {
+    try {
+      const res = await axios.post(
+        `${URL_SERVER}/api/dashboard/diary/notes`,
+        {
+          description: notesData.description,
+          category: notesData.category,
+          Date: notesData.Date
+        },
+        { withCredentials: true }
+      );
+
+      if (res.status === 200) {
+        console.log("La nota se registro con Exito!");
+      } else {
+        console.log(
+          "No se pudo registrar la nota por favor verifique los datos"
+        );
+      }
+      loadList("notes", setNoteData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onSubmitEditNote = async (notesData: eventDataMongoDb) => {
+    const res = await axios.put(
+      `${URL_SERVER}/api/dashboard/diary/notes?user=${eventDataEdit?.userId}&note=${eventDataEdit?._id}`,
+      {
+        description: notesData.description,
+        category: notesData.category,
+      },
+      { withCredentials: true }
+    );
+
+    if (res.status === 200) {
+      console.log("tarea editada satifactoriamente");
+    }
+
+    loadList("Notes", setNoteData);
+
+    setIsEditing(false);
+  };
+
+  const handleDeleteNote = async (note: eventDataMongoDb) => {
+    const res = await axios.delete(
+      `${URL_SERVER}/api/dashboard/diary/notes?user=${note?.userId}&note=${note?._id}`,
+      { withCredentials: true }
+    );
+    loadList("notes", setNoteData);
+    console.log(res);
   };
 
   const renderComponents = () => {
@@ -174,7 +225,6 @@ export default function DiaryComponent() {
             isEditing={isEditing}
             cancelEdit={cancelEdit}
             eventDataEdit={eventDataEdit}
-
           />
         );
       case "tareas":
@@ -188,7 +238,15 @@ export default function DiaryComponent() {
           />
         );
       case "notas":
-        return <FormNotas onSubmitNotas={handleSubmitNotes} />;
+        return (
+          <FormNotas
+            onSubmitNote={handleSubmitNote}
+            cancelEdit={cancelEdit}
+            isEditing={isEditing}
+            noteDataEdit={eventDataEdit}
+            onSubmitEditNote={onSubmitEditNote}
+          />
+        );
       default:
         break;
     }
@@ -219,7 +277,16 @@ export default function DiaryComponent() {
           />
         );
       case "notas":
-        return "";
+        return (
+          <ShowList
+            setData={setNoteData}
+            loadList={loadList}
+            eventData={noteData}
+            eventEdit={eventEdit}
+            handleDelete={handleDeleteNote}
+            string={"notes"}
+          />
+        );
       default:
         break;
     }

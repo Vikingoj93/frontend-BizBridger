@@ -13,6 +13,7 @@ import {
   noteData,
   eventDataMongoDb,
   taskDataMongoDb,
+  noteDataMongoDb
 } from "@/types/interfaces";
 import {
   InputCategory,
@@ -374,15 +375,31 @@ export function FormTask({
   );
 }
 
-export function FormNotas({ onSubmitNotas }: { onSubmitNotas: any }) {
+export function FormNotas({
+  onSubmitNote,
+  onSubmitEditNote,
+  isEditing,
+  cancelEdit,
+  noteDataEdit
+}: {
+  onSubmitNote: any;
+  isEditing: any;
+  onSubmitEditNote: any;
+  cancelEdit: any;
+  noteDataEdit: noteDataMongoDb | undefined,
+  
+}) {
   const [noteData, setNoteData] = useState<noteData>({
     description: "",
     category: "",
+    Date: date,
   });
 
   const Data = {
     description: noteData.description.trim(),
     category: noteData.category.trim(),
+    
+  Date: noteData.Date
   };
 
   const EventHandleChange = (
@@ -399,6 +416,13 @@ export function FormNotas({ onSubmitNotas }: { onSubmitNotas: any }) {
       return;
     }
 
+    if (Data.Date) {
+      if (!validateDateForm(Data.Date)) {
+        alert("La fecha para la tarea debe ser superior a la fecha actual");
+        return;
+      }
+    }
+
     if (validateMaxLength(250, Data.description.length)) {
       alert("La descripcion debe contener maximo 250 caracteres");
       return;
@@ -409,7 +433,7 @@ export function FormNotas({ onSubmitNotas }: { onSubmitNotas: any }) {
       return;
     }
 
-    onSubmitNotas(Data);
+    onSubmitNote(Data);
   };
 
   return (
@@ -428,12 +452,32 @@ export function FormNotas({ onSubmitNotas }: { onSubmitNotas: any }) {
         handleChange={EventHandleChange}
       />
 
-      <button
-        type="submit"
-        className="text-sm text-white font-bold bg-green-400 hover:bg-green-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out"
-      >
-        Guardar
-      </button>
+{isEditing ? (
+        <div className="flex justify-between">
+          <button
+            type="submit"
+            className="text-sm text-white font-bold bg-pink-400 hover:bg-pink-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+          >
+            Actualizar
+          </button>
+          <button
+            type="button"
+            className="text-sm text-white font-bold bg-red-400 hover:bg-red-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+            onClick={() => {
+              cancelEdit();
+            }}
+          >
+            Cancelar
+          </button>
+        </div>
+      ) : (
+        <button
+          type="submit"
+          className="text-sm text-white font-bold bg-pink-400 hover:bg-pink-500 py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+        >
+          Guardar
+        </button>
+      )}
     </form>
   );
 }
